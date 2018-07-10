@@ -33,6 +33,11 @@ public class Category {
 	public String getName() {
 		return name;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
 	public Collection<Review> getReviews() {
 		return reviews;
 	}

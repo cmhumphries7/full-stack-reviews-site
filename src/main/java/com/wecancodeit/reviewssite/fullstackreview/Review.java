@@ -14,8 +14,13 @@ public class Review {
 
 	private String name;
 
+	private String image;
+	
+	private String content;
+	
 	@ManyToOne
 	private Category category;
+
 
 	public long getId() {
 		return id;
@@ -24,17 +29,31 @@ public class Review {
 	public String getName() {
 		return name;
 	}
+	
+	public String getImage() {
+		return image;
+	}
+	
+	public String getContent() {
+		return content;
+	}
 
-	public Review() {
-
+	public Category getCategory() {
+		return category;
+	}
+	public Review(String name, String image, String content, Category category) {
+		this.name = name;
+		this.image = image;
+		this.content = content;
+		this.category = category;
+		
 	}
 
 	public Review(String name) {
 		this.name = name;
 	}
-
-	public Category getCategory() {
-		return category;
+	public Review() {
+		
 	}
 
 	@Override
