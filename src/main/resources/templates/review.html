@@ -7,6 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    
+	<p>
+	    REVIEW: <span th:text="${review.name}"></span>
+    </p>
+    <p th:if="${review.category}">
+    	CATEGORY: <span th:text="${review.category.name}"></span>
+	</p>
 </body>
 </html>

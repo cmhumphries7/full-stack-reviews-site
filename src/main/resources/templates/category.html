@@ -16,17 +16,8 @@
              <div th:each="category: ${categories}">
              <h1 th:text="'Category: ' + ${category.name}"></h1>
              <p th:text="${category.description}"></p>
+             <a href="http://localhost:8080/show-categories">Back to home</a>
              </div> 
-
-             <h3>Reviews</h3>
-
-             <div th:each="review : ${categories.reviews}">
-                    <ul>
-                        <li>
-                            <a th:href="@{review(id=${review.id})}" th:text="${review.title}"></a>
-                        </li>
-                    </ul>
-                </div>
 
 
             </section>
