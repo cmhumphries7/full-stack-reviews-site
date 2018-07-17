@@ -1,45 +1,57 @@
 <!DOCTYPE html>
- <html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" th:href="@{/styles.css}" />
-    <title>Category</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}" />
+    <title>Game Category</title>
 </head>
 
 <body>
     <div class="container">
+        <header>
+            <h1>Games in This Category</h1>
+        </header>
         <main>
-            <section>
-             <div th:each="category: ${categories}">
-             <h1 th:text="'Category: ' + ${category.name}"></h1>
-             <p th:text="${category.description}"></p>
-             <a href="http://localhost:8080/show-categories">Back to home</a>
-             </div> 
-
-              <!-- <div th:each="review : ${categories.reviews}">
-            h3>Reviews</h3>
-
-                    <ul>
-                        <li>
-                            <a th:href="@{review(id=${review.id})}" th:text="${review.title}"></a>
-                        </li>
-                    </ul>
-                </div> -->
-
-
-            </section>
+            <h2 th:text="'Category: ' + ${category.name}"></h2>
+            <p th:text="${category.description}"></p>
 
 
 
+            <div id="gameList" th:each="review: ${category.reviews}">
+                <ul>
+                    <li>
+                        <a th:href="@{review(id=${review.id})}" th:text="${review.name}"></a>
+                    </li>
+                </ul>
+
+            </div>
+            <div id="gameImages">
+                <article id="one">
+                    <img th:src="@{${category.imageOne}}" />
+                </article>
+                <article id="two">
+                    <img th:src="@{${category.imageTwo}}" />
+                </article>
+                <article id="three">
+                    <img th:src="@{${category.imageThree}}" />
+                </article>
+            </div>
         </main>
 
-
-
-
     </div>
-    
+    <nav>
+        <a href="/show-reviews">Reviews</a>
+        <a href="/show-categories">Categories</a>
+    </nav>
+
 </body>
+
+<footer>
+    &copy; Christine Humphries 2018
+</footer>
+
 </html>

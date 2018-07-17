@@ -3,6 +3,7 @@ package com.wecancodeit.reviewssite.fullstackreview;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -16,10 +17,13 @@ public class Review {
 
 	private String image;
 	
+	@Lob
 	private String content;
 	
 	@ManyToOne
 	private Category category;
+
+	private String link;
 
 
 	public long getId() {
@@ -37,14 +41,19 @@ public class Review {
 	public String getContent() {
 		return content;
 	}
+	
+	public String getLink() {
+		return link;
+	}
 
 	public Category getCategory() {
 		return category;
 	}
-	public Review(String name, String image, String content, Category category) {
+	public Review(String name, String image, String content, String link, Category category) {
 		this.name = name;
 		this.image = image;
 		this.content = content;
+		this.link = link;
 		this.category = category;
 		
 	}

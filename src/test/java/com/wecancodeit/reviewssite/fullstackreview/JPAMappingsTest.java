@@ -31,7 +31,7 @@ public class JPAMappingsTest {
 
 	@Test
 	public void shouldSaveAndLoadCategory() {
-		Category category = categoryRepo.save(new Category("category", "description"));
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
 		long categoryId = category.getId();
 
 		entityManager.flush();
@@ -44,7 +44,7 @@ public class JPAMappingsTest {
 
 	@Test
 	public void shouldGenerateCategoryId() {
-		Category category = categoryRepo.save(new Category("category", "description"));
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
 		long categoryId = category.getId();
 
 		entityManager.flush();
@@ -71,13 +71,13 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldEstablishCategoriesToReviewRelationship() {
 
-		Category category = categoryRepo.save(new Category("RPG", "role-playing game"));
+		Category category = categoryRepo.save(new Category("RPG", "role-playing game", "image1", "image2", "image3"));
 		long categoryId = category.getId();
 
-		Review skyrim = reviewRepo.save(new Review("Skyrim", "dragon image", "content", category));
+		Review skyrim = reviewRepo.save(new Review("Skyrim", "dragon image", "content", "link", category));
 		long skyrimId = skyrim.getId();
 
-		Review fallout = reviewRepo.save(new Review("Fallout 4", "fallout image", "content", category));
+		Review fallout = reviewRepo.save(new Review("Fallout 4", "fallout image", "content", "link", category));
 		long falloutId = fallout.getId();
 
 		entityManager.flush();
@@ -99,12 +99,12 @@ public class JPAMappingsTest {
 
 	@Test
 	public void shouldFindReviewsForCategory() {
-		Category category = categoryRepo.save(new Category("category", "description"));
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
 		
 		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage",
-				"reviewContent", category));
+				"reviewContent", "reviewLink", category));
 		Review review2 = reviewRepo.save(new Review("reviewTitle2", "reviewImage",
-				"reviewContent", category));
+				"reviewContent", "reviewLink", category));
 		
 		Collection<Review> reviewsForCategory = reviewRepo.findByCategory(category);
 		assertThat(reviewsForCategory, containsInAnyOrder(review1, review2));

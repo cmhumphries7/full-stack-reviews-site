@@ -1,17 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}" />
+
+    <title>Game Review</title>
 </head>
+
 <body>
-	<p>
-	    REVIEW: <span th:text="${review.name}"></span>
-    </p>
-    <p th:if="${review.category}">
-    	CATEGORY: <span th:text="${review.category.name}"></span>
-	</p>
+    <div class="container">
+        <header>
+            <h2>
+                Review:
+                <span th:text="${review.name}"></span>
+            </h2>
+            <h2 th:if="${review.category}">
+                Category:
+                <span th:text="${review.category.name}"></span>
+            </h2>
+        </header>
+
+        <section id="content">
+            <img class="center" th:src="@{${review.image}}" />
+            <p>
+                <span th:text="${review.content}"></span>
+            </p>
+            <p>
+                <a th:href="@{${review.link}}">Learn More</a>
+            </p>
+        </section>
+
+    </div>
+
+    <nav>
+        <a href="/show-reviews">Reviews</a>
+        <a href="/show-categories">Categories</a>
+    </nav>
 </body>
+
+<footer>
+    &copy; Christine Humphries 2018
+</footer>
+
 </html>
