@@ -13,6 +13,9 @@ public class ReviewSitePopulator implements CommandLineRunner {
 
 	@Resource
 	private CategoryRepo categoryRepo;
+	
+	@Resource
+	private TagRepo tagRepo;
 
 	@Override
 	public void run(String... args) throws Exception {

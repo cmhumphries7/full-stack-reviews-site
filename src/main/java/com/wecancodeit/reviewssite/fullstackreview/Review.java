@@ -1,10 +1,17 @@
 package com.wecancodeit.reviewssite.fullstackreview;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+
 
 @Entity
 public class Review {
@@ -22,14 +29,34 @@ public class Review {
 	
 	@ManyToOne
 	private Category category;
+	
+	
 
 	private String link;
+	
+	@ManyToMany
+	private Collection<Tag> tags;
 
 
 	public long getId() {
 		return id;
 	}
 
+	protected Review() {
+		
+	}
+	
+	public Review(String name, String image, String content, String link, Category category, Tag...tags) {
+		this.name = name;
+		this.image = image;
+		this.content = content;
+		this.link = link;
+		this.category = category;
+		this.tags = new HashSet<>(Arrays.asList(tags));
+		
+	
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -45,25 +72,19 @@ public class Review {
 	public String getLink() {
 		return link;
 	}
+	
+
 
 	public Category getCategory() {
 		return category;
 	}
-	public Review(String name, String image, String content, String link, Category category) {
-		this.name = name;
-		this.image = image;
-		this.content = content;
-		this.link = link;
-		this.category = category;
-		
+	
+	public Collection<Tag> getTags() {
+		return tags;
 	}
 
-	public Review(String name) {
-		this.name = name;
-	}
-	public Review() {
-		
-	}
+	
+	
 
 	@Override
 	public int hashCode() {
@@ -86,5 +107,7 @@ public class Review {
 			return false;
 		return true;
 	}
+
+	
 
 }

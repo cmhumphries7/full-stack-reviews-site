@@ -29,6 +29,9 @@ public class JPAMappingsTest {
 	@Resource
 	private ReviewRepo reviewRepo;
 
+	@Resource
+	private TagRepo tagRepo;
+
 	@Test
 	public void shouldSaveAndLoadCategory() {
 		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
@@ -56,15 +59,18 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldSaveAndLoadReview() {
 
-		Review review = reviewRepo.save(new Review("review"));
-		long reviewId = review.getId();
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo
+				.save(new Review("review", "reviewImage", "reviewContent", "reviewLink", category));
+		long reviewId = review1.getId();
 
 		entityManager.flush();
 		entityManager.clear();
 
 		Optional<Review> result = reviewRepo.findById(reviewId);
-		review = result.get();
-		assertThat(review.getName(), is("review"));
+		review1 = result.get();
+		assertThat(review1.getName(), is("review"));
 
 	}
 
@@ -95,19 +101,93 @@ public class JPAMappingsTest {
 		assertThat(resultCategory.getReviews(), containsInAnyOrder(resultSkyrim, resultFallout));
 
 	}
-	
 
 	@Test
 	public void shouldFindReviewsForCategory() {
 		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
-		
-		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage",
-				"reviewContent", "reviewLink", category));
-		Review review2 = reviewRepo.save(new Review("reviewTitle2", "reviewImage",
-				"reviewContent", "reviewLink", category));
-		
+
+		Review review1 = reviewRepo
+				.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category));
+		Review review2 = reviewRepo
+				.save(new Review("reviewTitle2", "reviewImage", "reviewContent", "reviewLink", category));
+
 		Collection<Review> reviewsForCategory = reviewRepo.findByCategory(category);
 		assertThat(reviewsForCategory, containsInAnyOrder(review1, review2));
+	}
+
+	@Test
+	public void shouldSaveAndLoadTags() {
+		Tag tag = tagRepo.save(new Tag("Tag Name"));
+		long tagId = tag.getTagId();
+
+		entityManager.flush();
+		entityManager.clear();
+
+		Optional<Tag> result = tagRepo.findById(tagId);
+		tag = result.get();
+		assertThat(tag.getName(), is("Tag Name"));
+	}
+
+	@Test
+	public void shouldGenerateTagId() {
+		Tag tag = tagRepo.save(new Tag("Tag Name"));
+		long tagId = tag.getTagId();
+
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(tagId, is(greaterThan(0L)));
+	}
+
+	@Test
+	public void shouldEstablishReviewToTagRelationships() {
+		Tag tag1 = tagRepo.save(new Tag("tag1"));
+		Tag tag2 = tagRepo.save(new Tag("tag2"));
+
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category, tag1, tag2));
+		long reviewId = review.getId();
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Review> result = reviewRepo.findById(reviewId);
+		review = result.get();
+		assertThat(review.getTags(), containsInAnyOrder(tag1,tag2));
+		
+		}
+	@Test
+	public void shouldFindReviewsForTag() {
+		Tag tag1 = tagRepo.save(new Tag("tag1"));
+		
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category, tag1));
+		Review review2 = reviewRepo.save(new Review("reviewTitle2", "reviewImage", "reviewContent", "reviewLink", category, tag1));
+
+		Collection<Review> reviewsForTag = reviewRepo.findByTags(tag1);
+		
+		assertThat(reviewsForTag, containsInAnyOrder(review1, review2));
+	}
+	
+	@Test
+	public void shouldFindReviewsForTagId() {
+		Tag tag1 = tagRepo.save(new Tag("tag1"));
+		long tagId = tag1.getTagId();
+		
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category, tag1));
+		Review review2 = reviewRepo.save(new Review("reviewTitle2", "reviewImage", "reviewContent", "reviewLink", category, tag1));
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Collection<Review> reviewsForTopic = reviewRepo.findByTagsId(tagId);
+		
+		assertThat(reviewsForTopic, containsInAnyOrder(review1, review2));
+		
 	}
 
 }
