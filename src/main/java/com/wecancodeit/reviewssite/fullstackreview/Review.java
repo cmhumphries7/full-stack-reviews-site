@@ -10,6 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 
 
@@ -27,6 +32,7 @@ public class Review {
 	@Lob
 	private String content;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Category category;
 	
@@ -34,8 +40,13 @@ public class Review {
 
 	private String link;
 	
+	@JsonIgnore
 	@ManyToMany
 	private Collection<Tag> tags;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "review")
+	private Collection<Comment> comments;
 
 
 	public long getId() {
@@ -79,10 +90,24 @@ public class Review {
 		return category;
 	}
 	
+	
 	public Collection<Tag> getTags() {
 		return tags;
 	}
 
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+	
+	public void addTag(Tag tag) {
+		this.tags.add(tag);
+	}
+	
+
+	public void deleteTag(Tag tag) {
+		this.tags.remove(tag);
+		
+	}
 	
 	
 
@@ -107,6 +132,9 @@ public class Review {
 			return false;
 		return true;
 	}
+
+	
+
 
 	
 

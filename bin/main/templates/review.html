@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <div id="reviewId" style=display:none th:text="${review.id}"></div>
     <div class="container">
         <header>
             <h2>
@@ -24,26 +25,71 @@
             </h2>
         </header>
 
+
         <section id="content">
             <img class="center" th:src="@{${review.image}}" />
             <p>
                 <span th:text="${review.content}"></span>
             </p>
             <p>
-                <a th:href="@{${review.link}}">Learn More</a>
+                <a th:href="@{${review.link}}">LEARN MORE</a>
             </p>
         </section>
 
     </div>
 
+
+    <div id="tagContainer">
+        <div id="showTags">
+        </div>
+    </div>
+
+    <div id="tagForms">
+
+        <form id="add-new-tag" onsubmit="addTag(event)">
+            <input type="text" name="tagName" placeholder="Enter New Tag" />
+            <input type="hidden" name="reviewId" th:value="${review.id}" />
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+    <div id="commentsContainer">
+
+        <div id="commentForm">
+            <form id="addComment" method="POST" action="/new-comment">
+                <input type="text" name="comment" placeholder="Enter Comment" />
+                <input type="text" name="poster" placeholder="Enter Your Name" />
+                <input type="hidden" name="id" th:value="${review.id}" />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <div class="commentBox" th:each="comment: ${review.comments}">
+            <em>
+                <p th:text="'&quot;' + ${comment.comment} + '&quot;'"></p>
+            </em>
+            <p id=commentedByLine th:utext="'- ' + ${comment.poster}"></p>
+        </div>
+    </div>
+
+
+
+
+
+
     <nav>
         <a href="/show-reviews">Reviews</a>
         <a href="/show-categories">Categories</a>
+        <a href="/show-tags">Tags</a>
     </nav>
-</body>
 
-<footer>
-    &copy; Christine Humphries 2018
-</footer>
+
+    <footer>
+        &copy; Christine Humphries 2018
+    </footer>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
 
 </html>

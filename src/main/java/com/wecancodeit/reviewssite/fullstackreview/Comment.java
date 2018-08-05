@@ -1,44 +1,51 @@
 package com.wecancodeit.reviewssite.fullstackreview;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Tag {
-
-	@Id
+public class Comment {
+	
+    @Id
 	@GeneratedValue
 	private long id;
-	
-	private String name;
-	
-	@ManyToMany(mappedBy ="tags")
-	private Collection<Review> reviews;
-	
-	//Constructors
-	protected Tag() {
-		
-	}
-	
-	public Tag(String name) {
-		this.name = name;
+    
+     @Lob
+    private String comment;
+     
+    private String poster;
+     
+    @JsonIgnore
+    @ManyToOne
+    private Review review;
+    
+    //Constructors
+    protected Comment() {
+    	
+    }
+   
+	public Comment(String comment, String poster, Review review) {
+		this.comment = comment;
+		this.poster = poster;
+		this.review = review;
 	}
 	
 	//Getters
-	public String getName() {
-		return name;
-	}
-	
 	public long getId() {
 		return id;
 	}
 	
-	public Collection<Review> getReviews() {
-		return reviews;
+	public String getComment() {
+		return comment;
+	}
+	
+	public String getPoster() {
+		return poster;
 	}
 
 	@Override
@@ -57,12 +64,13 @@ public class Tag {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tag other = (Tag) obj;
+		Comment other = (Comment) obj;
 		if (id != other.id)
 			return false;
 		return true;
 	}
 	
 	
+
 	
 }

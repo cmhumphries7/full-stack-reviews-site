@@ -31,6 +31,9 @@ public class JPAMappingsTest {
 
 	@Resource
 	private TagRepo tagRepo;
+	
+	@Resource
+	private CommentRepo commentRepo;
 
 	@Test
 	public void shouldSaveAndLoadCategory() {
@@ -118,7 +121,7 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldSaveAndLoadTags() {
 		Tag tag = tagRepo.save(new Tag("Tag Name"));
-		long tagId = tag.getTagId();
+		long tagId = tag.getId();
 
 		entityManager.flush();
 		entityManager.clear();
@@ -131,7 +134,7 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldGenerateTagId() {
 		Tag tag = tagRepo.save(new Tag("Tag Name"));
-		long tagId = tag.getTagId();
+		long tagId = tag.getId();
 
 		entityManager.flush();
 		entityManager.clear();
@@ -157,6 +160,7 @@ public class JPAMappingsTest {
 		assertThat(review.getTags(), containsInAnyOrder(tag1,tag2));
 		
 		}
+	
 	@Test
 	public void shouldFindReviewsForTag() {
 		Tag tag1 = tagRepo.save(new Tag("tag1"));
@@ -174,7 +178,7 @@ public class JPAMappingsTest {
 	@Test
 	public void shouldFindReviewsForTagId() {
 		Tag tag1 = tagRepo.save(new Tag("tag1"));
-		long tagId = tag1.getTagId();
+		long tagId = tag1.getId();
 		
 		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
 
@@ -188,6 +192,59 @@ public class JPAMappingsTest {
 		
 		assertThat(reviewsForTopic, containsInAnyOrder(review1, review2));
 		
+	}
+	
+	@Test
+	public void shouldSaveAndLoadComment() {
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category));
+		
+		Comment comment = commentRepo.save(new Comment("comment", "poster",  review1));
+		long commentId = comment.getId();
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Comment> result = commentRepo.findById(commentId);
+		comment = result.get();
+		
+		assertThat(comment.getComment(), is("comment"));
+		
+		}
+	
+	@Test
+	public void shouldGenerateCommentId() {
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category));
+		
+		Comment comment = commentRepo.save(new Comment("comment", "poster",  review1));
+		long commentId = comment.getId();
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		assertThat(commentId, is(greaterThan(0L)));
+	}
+	
+	@Test
+	public void shouldEstablishCommentToReviewRelationship() {
+		Category category = categoryRepo.save(new Category("category", "description", "image1", "image2", "image3"));
+
+		Review review1 = reviewRepo.save(new Review("reviewTitle1", "reviewImage", "reviewContent", "reviewLink", category));
+		
+		Comment comment1 = commentRepo.save(new Comment("comment1", "poster",  review1));
+		Comment comment2 = commentRepo.save(new Comment("comment2", "poster",  review1));
+		
+		long reviewId = review1.getId();
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Review> result = reviewRepo.findById(reviewId);
+		review1 = result.get();
+		assertThat(review1.getComments(), containsInAnyOrder(comment1, comment2));
 	}
 
 }

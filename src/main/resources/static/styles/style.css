@@ -1,6 +1,7 @@
 :root {
     --main-color1: #178E7C;
     --main-color2: #f88379;
+    --hightlight: #d3d3d3;
 }
 
 * {
@@ -8,8 +9,6 @@
    margin: 0;
    box-sizing: border-box;
    line-height: 1.618em;
-
-   color: var(--main-color1);
    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
    
 }
@@ -20,7 +19,7 @@ html {
     margin-top: 3em;
 
     background-image: url("/images/full-bloom.png");
-    overflow: hidden;
+    overflow: auto;
 }
 
 header,
@@ -37,25 +36,23 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 h2 {
     padding-bottom: .5em;
-    padding-top: 1em;
+    padding-top: .5em;
+    color: var(--main-color1);
 }
 
 
 .container {
-    width: 75%;
+    width: 50%;
+    height: 80vh;
     margin: auto;
+    /* overflow: auto;  */
 }
 
-#content img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
 
 nav {
     position: fixed;
@@ -77,11 +74,12 @@ nav a {
 }
 
 nav a:hover {
-	background: #d3d3d3;
+    background: var(--hightlight);
+    color: var(--main-color2);
 }
 
-section {
-	margin: 1em 0;
+#content {
+	margin: 0;
 
 	padding-top: 2em;
 	max-height: 10em;
@@ -92,16 +90,34 @@ div ul {
 }
 
 #content img {
-    padding-bottom: 3em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding-bottom: 1.5em;
 }
+
 
 #content p {
     text-align: center;
+    color: var(--main-color1);
+    padding-bottom: 1.5em;
+}
+
+#content a {
+    border-radius: 1.8vh;
+    padding: 5px;
+    border: 2px solid var(--main-color1);
+    cursor: pointer;
+    color:white;
+    background: var(--main-color1);
+
+
 }
 
 #content a:hover {
-    color: white;
-    background: #FFCAEE;
+    color: var(--main-color1);
+    background: var(--hightlight);
 }
 
 footer {
@@ -140,6 +156,133 @@ footer {
     width: 100%;
     height: auto;
     object-fit: fill;
-	border: 2px solid black;
+    border: 2px solid black;
+    position: relative;
 
 }
+
+#tagsContainer {
+    display: flex;
+    position: relative;
+    
+}
+
+
+#showTags {
+    position: absolute;
+    left: .25em;
+    top: 3em;
+
+    align-items: center;
+    margin-left: auto;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-row-gap: 1em;
+    
+}
+
+#showTags div {
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 140px; 
+    height: 100%;
+    padding: 1px;
+    border: 2px solid #202020; 
+    background: var(--main-color2);
+
+   
+    
+}
+
+#showTags div:hover {
+    background: var(--hightlight);
+    
+}
+
+#showTags a:hover {
+    color: var(--main-color2); 
+}
+
+#showTags button {
+    background: none;
+    border: none; 
+    right:.25px;
+    font-size: 20px;
+}
+#showTags button:hover {
+    background: var(--hightlight);
+    color: var(--main-color2); 
+}
+
+
+
+#tagForms {
+    position: fixed;
+    bottom: 6em;
+    left: 1em;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    margin-left: auto; 
+}
+
+#commentsContainer {
+    margin-top: 10px;
+    padding-top: 10px;
+    position: fixed;
+    bottom: 3em;
+    right: 1em;
+    overflow: auto;
+    height: 17vh;
+    width: 30vw;
+}
+
+.commentBox {
+    border: solid 1px;
+    background-color: white;
+    margin-top: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.commentBox p {
+    padding-left: 10px;
+}
+
+#commentForm {
+    width: 83%;
+    margin-left: auto;
+}
+
+#commentsLabel {
+display: inline;
+margin-left: auto;
+}
+
+#addComment {
+   display:inline;
+   margin-right: 0;
+   margin-left: auto;
+}
+
+#addComment input[type="text"] {
+    width: 35%;
+}
+
+#commentedByLine {
+	text-align: right;
+}
+
+#tagList {
+    display: flex;
+    padding: .1vh;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+
+
+
+
